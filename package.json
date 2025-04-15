@@ -1,6 +1,6 @@
 {
   "name": "@ridecell/vehicle-stage-tracker",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "A React component for tracking vehicle movements through stages",
   "type": "module",
   "main": "dist/vehicle-stage-tracker.umd.js",
