@@ -1,73 +1,118 @@
-# Welcome to your Lovable project
+# Vehicle Stage Tracker
 
-## Project info
+A React component for tracking vehicle movements through different stages.
 
-**URL**: https://lovable.dev/projects/87fba5de-de71-4340-b50d-fb5ccaa86602
+## Installation
 
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/87fba5de-de71-4340-b50d-fb5ccaa86602) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+npm install vehicle-stage-tracker
 ```
 
-**Edit a file directly in GitHub**
+## Usage
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```jsx
+import React, { useState } from 'react';
+import { VehicleMovement } from 'vehicle-stage-tracker';
+import 'vehicle-stage-tracker/dist/style.css'; // Import styles if needed
 
-**Use GitHub Codespaces**
+function App() {
+  // Sample initial data
+  const [vehicleMovements, setVehicleMovements] = useState([
+    {
+      id: "1",
+      licensePlate: "ABC123",
+      vin: "1HGCM82633A123456",
+      contractNumber: "CONT-001",
+      sourceStage: "Inspection",
+      targetStage: "Maintenance",
+      dateOfMovement: "2025-04-10",
+      action: "Create",
+      comment: "Initial inspection complete",
+      executionDate: "2025-04-10T10:30:00Z",
+      executedBy: "john.doe@example.com"
+    }
+  ]);
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+  // Handle new movement
+  const handleAddMovement = (movement) => {
+    setVehicleMovements([movement, ...vehicleMovements]);
+    // Additional logic like API calls could be added here
+  };
 
-## What technologies are used for this project?
+  // Handle CSV upload
+  const handleBulkUpload = (movements) => {
+    setVehicleMovements([...movements, ...vehicleMovements]);
+    // Additional logic like API calls could be added here
+  };
 
-This project is built with:
+  return (
+    <div className="app">
+      <VehicleMovement 
+        data={vehicleMovements}
+        onAddMovement={handleAddMovement}
+        onBulkUpload={handleBulkUpload}
+      />
+    </div>
+  );
+}
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+export default App;
+```
 
-## How can I deploy this project?
+## Props
 
-Simply open [Lovable](https://lovable.dev/projects/87fba5de-de71-4340-b50d-fb5ccaa86602) and click on Share -> Publish.
+| Prop | Type | Description |
+|------|------|-------------|
+| `data` | Array | Vehicle movement data to display in the component |
+| `onAddMovement` | Function | Callback function that is called when a new movement is added |
+| `onBulkUpload` | Function | Callback function that is called when movements are uploaded via CSV |
 
-## Can I connect a custom domain to my Lovable project?
+## Data Format
 
-Yes it is!
+Each vehicle movement object should have the following structure:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+```javascript
+{
+  id: "1", // Unique identifier
+  licensePlate: "ABC123", // License plate number
+  vin: "1HGCM82633A123456", // Vehicle identification number
+  contractNumber: "CONT-001", // Contract number
+  sourceStage: "Inspection", // Source stage
+  targetStage: "Maintenance", // Target stage
+  dateOfMovement: "2025-04-10", // Date of movement (YYYY-MM-DD)
+  action: "Create", // Action type: "Create", "Update", or "Delete"
+  comment: "Initial inspection complete", // Optional comment
+  executionDate: "2025-04-10T10:30:00Z", // When the action was executed
+  executedBy: "john.doe@example.com" // Who executed the action
+}
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## CSV Format
+
+For bulk uploads, the CSV file should have the following columns:
+
+- License Plate
+- VIN
+- Contract number
+- Source Stage
+- Target Stage
+- Date of movement
+- Action (Create, Update, or Delete)
+- Comment
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build the package
+npm run build
+```
+
+## License
+
+MIT

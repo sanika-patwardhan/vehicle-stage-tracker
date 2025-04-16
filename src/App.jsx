@@ -1,47 +1,54 @@
+import React, { useState } from 'react';
+import { SupplierDataDetails } from './index';
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Snackbar } from "@mui/material";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-
-// Create a client
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      refetchOnWindowFocus: false,
+const App = () => {
+  // Sample initial data
+  const [vehicleMovements, setVehicleMovements] = useState([
+    {
+      id: "1",
+      licensePlate: "ABC123",
+      vin: "1HGCM82633A123456",
+      contractNumber: "CONT-001",
+      sourceStage: "Inspection",
+      targetStage: "Maintenance",
+      dateOfMovement: "2025-04-10",
+      action: "Create",
+      comment: "Initial inspection complete",
+      executionDate: "2025-04-10T10:30:00Z",
+      executedBy: "john.doe@example.com"
     },
-  },
-});
+    {
+      id: "2",
+      licensePlate: "XYZ789",
+      vin: "5YJSA1E63MF123456",
+      contractNumber: "CONT-002",
+      sourceStage: "Maintenance",
+      targetStage: "Ready for Sale",
+      dateOfMovement: "2025-04-11",
+      action: "Update",
+      comment: "Maintenance completed",
+      executionDate: "2025-04-11T14:20:00Z",
+      executedBy: "jane.smith@example.com"
+    }
+  ]);
 
-// Create a theme
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#dc004e',
-    },
-  },
-});
+  // Handle new movement
+  const handleAddMovement = (movement) => {
+    setVehicleMovements([movement, ...vehicleMovements]);
+    console.log('New movement added:', movement);
+  };
 
-const App = () => (
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider>
-  </ThemeProvider>
-);
+  // Handle CSV upload
+  const handleBulkUpload = (movements) => {
+    setVehicleMovements([...movements, ...vehicleMovements]);
+    console.log('Bulk upload:', movements);
+  };
+
+  return (
+    <div className="app">
+     <SupplierDataDetails />
+    </div>
+  );
+};
 
 export default App;

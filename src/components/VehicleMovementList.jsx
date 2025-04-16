@@ -20,30 +20,14 @@ import {
   Tooltip
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import InfoIcon from '@mui/icons-material/Info';
-import { getSampleSupplierData } from '../services/vehicle-service';
-import SupplierDataDialog from './SupplierDataDialog';
 
 const VehicleMovementList = ({ movements }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sourceStageFilter, setSourceStageFilter] = useState('');
   const [targetStageFilter, setTargetStageFilter] = useState('');
   const [actionFilter, setActionFilter] = useState('');
-  const [showDialog, setShowDialog] = useState(false);
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [supplierData, setSupplierData] = useState(null);
-  
-  const handleOpenDialog = (vehicle) => {
-    const data = getSampleSupplierData(vehicle.vin);
-    setSelectedVehicle(vehicle);
-    setSupplierData(data);
-    setShowDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setShowDialog(false);
-  };
+  // No dialog or supplier data functionality
 
   const formatDate = (dateString) => {
     try {
@@ -170,7 +154,6 @@ const VehicleMovementList = ({ movements }) => {
               <TableCell>Comment</TableCell>
               <TableCell>Execution Date</TableCell>
               <TableCell>Executed By</TableCell>
-              <TableCell>Info</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -221,14 +204,14 @@ const VehicleMovementList = ({ movements }) => {
         </Table>
       </TableContainer>
       
-      {showDialog && selectedVehicle && (
+   {/*    {selectedVehicle && (
         <SupplierDataDialog
           open={showDialog}
           onClose={handleCloseDialog}
           vehicleData={selectedVehicle}
           supplierData={supplierData}
         />
-      )}
+      )} */}
     </Box>
   );
 };
